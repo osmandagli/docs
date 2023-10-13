@@ -39,6 +39,13 @@ echo |  awk '{print "Date is: '$date'"}'
 echo |  awk -v date=$(date +"%d-%m-%y") '{printf "Date is: %s\n", date}'
 ~~~~
 
+## xargs
+
+To take an argument in the middle of the command use
+~~~
+echo primary | xargs -I % echo % secondary
+~~~
+
 ## BASH SCRIPTS
 
 To run bash scrip in the background 
