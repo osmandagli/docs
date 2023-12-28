@@ -44,7 +44,7 @@ k get nodes |grep control-plane  |awk '{print $1}' | xargs echo kubectl describe
 
 Describe all master nodes
 ~~~
-k get nodes |grep control-plane |awk '{print "kubectl describe node "$1}' > /tmp/execution2.sh;sleep 1 | chmod +x /tmp/execution2.sh | bash -c /tmp/execution2.sh
+k get nodes | grep control-plane | awk '{print "kubectl describe node",$1}' | sh
 ~~~
 
 ## HELM
