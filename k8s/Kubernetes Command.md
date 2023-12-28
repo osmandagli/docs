@@ -1,6 +1,6 @@
 # Kubernetes Commands
 
-If kubernetes namespace got stuck at terminating state
+If Kubernetes namespace got stuck at the terminating state
 
 ~~~~
 kubectl get namespace "stucked-namespace" -o json \
@@ -21,25 +21,20 @@ Display resource usage for nodes or pods
 kubectl top node
 ~~~~
 
-Copy file and directories to and from containers pod and host can change places. Example show copying file pod to host.
+Copy files and directories to and from containers pod and host can change places. Example shows copying file pod to host.
 
 ~~~~
 kubectl cp <pod-name>:<container-name> <host-path> --container=<container-name>
 ~~~~
 
-To scale all deployments to a spescific replicas
+To scale all deployments to specific replicas
 ~~~
 k get deploy -n $namespace | grep -v NAME |awk '{print "k scale --replicas=$desired_count deployment/" $1 " -n $namespace"}'
 ~~~
 
-If replica count equals to 2 scale to 3
+If the replica count equals 2 scale to 3
 ~~~
 k get deploy -n $namespace | grep -v NAME |awk '{print "k scale --current-replicas=2 --replicas=3 deployment/" $1 " -n $namespace"}'
-~~~
-
-Describe all master nodes without using any file
-~~~
-k get nodes |grep control-plane  |awk '{print $1}' | xargs echo kubectl describe nodes | awk '{print "\"" $0 "\""}' |xargs bash -c
 ~~~
 
 Describe all master nodes
