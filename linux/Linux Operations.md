@@ -1,49 +1,58 @@
----
-tags: [Linux Operations and Commands]
-title: Linux Commands
-created: '2023-10-10T08:13:06.032Z'
-modified: '2023-10-10T11:38:17.539Z'
----
+# Linux Operations
 
-# Linux Commands
+## CronJob
 
-## awk
+### Crontab Syntax
+~~~~
+*  *  *  *  *  --> command to execute
+-- -- -- -- --  
+|  |  |  |  |
+|  |  |  |  +-------------------- day of weak (0-6) (Sunday=0)
+|  |  |  +------------------ month (1-12)
+|  |  +---------------- day of month (1-31)
+|  +-------------- hour (0-23)
++------------ min (0-59)
 
-Prints the file.txt
 ~~~~
-awk {print} file.txt or cat file.txt | awk {print}
+Example-1: /root/backup.sh script will be executed every Friday at 17:37 without checking the month, or the day of month.
 ~~~~
-Displays the line numbers for the file.txt file
+37 17 * * 5 root/backup.sh
 ~~~~
-awk {print NR} file.txt
+Example-2: /root/backup.sh script will be executed every Monday and Friday at 17:37 without checking the month, or the day of month.
 ~~~~
-Displays lines 3 to 6. Note: $0 prints the whole line
+37 17 * * 1,5 root/backup.sh
 ~~~~
-awk 'NR==3, NR==6 {print NR,$0}' file.txt
+Example-3: /root/backup.sh script will be executed every 15 minutes.
 ~~~~
-Prints '-' between line number and first element
+*/15 * * * * /root/backup.sh
 ~~~~
-awk '{print NR,"- " $1 }' file.txt
+Example-4: /root/backup.sh script will be executed every hour. 
+Note: available parameters are @hourly, @daily = @midnight (both runs at midnight), @weekly, @monthly, @yearly, @reboot
 ~~~~
-Prints the total number of lines
-~~~~
-awk 'END {print NR}' file.txt
-~~~~
-Prints the lines with more than 10 character
-~~~~
-awk 'length($0) > 10' file.txt
-~~~~
-Check for a spesific text in any specific column. Code prints the $2^{nd}$ line if the word equals to "word"
-~~~~
-awk '{if($1=="word") print $0; }' file.txt
-~~~~
-Using both variable and text with awk in 2 versions
-~~~~
-export date=$(date +"%d-%m-%y")
-echo |  awk '{print "Date is: '$date'"}'
-~~~~
-~~~~
-echo |  awk -v date=$(date +"%d-%m-%y") '{printf "Date is: %s\n", date}'
+@hourly /root/backup.sh
 ~~~~
 
+### CronJob Permission
 
+To run a CronJob user that will run the CronJob, should be in /etc/cron.allow file. /etc/cron.deny file consists of the users that are not allowed to run cronjobs.
+
+### Creating CronJobs
+
+To create a CronJob enter the snippet below into the command line. This will open a nano then you can enter the CronJob details and save it.
+
+~~~
+crontab -e
+~~~
+
+### Display List of CronJobs
+
+The code below lists all of the active CronJobs for the current user
+~~~
+crontab -l
+~~~
+
+To check for a specific user's CronJobs
+
+~~~
+crontab -u username -l
+~~~
