@@ -1,32 +1,30 @@
 ~~~
-echo "kind: StorageClass
+kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: manual
 provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer" > sc-manual.yaml
+volumeBindingMode: WaitForFirstConsumer
 ~~~
 
 ~~~
-echo "apiVersion: v1
+apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-nexus
+  name: pv-log
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 8Gi
   accessModes:
-  - ReadWriteOnce
-  claimRef:
-    namespace: nexus
-    name: pvc-nexus
+  - ReadWriteMany
   hostPath:
-    path: /data/nexus" > pv-nexus.yaml
+    path: /pv/log
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 100Mi
 ~~~
 
 ~~~
-echo "apiVersion: v1
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-nexus
@@ -37,5 +35,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 8Gi" > pvc-nexus.yaml
+      storage: 8Gi
 ~~~
