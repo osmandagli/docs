@@ -26,36 +26,7 @@ Easy Way
 grep  -e "^[0-9]\{3\}-[0-9]\{3\}-[0-9]\{4\}$" -e "^([0-9]\{3\}) [0-9]\{3\}-[0-9]\{4\}$" file.txt
 ~~~
 
-Very hard way
-
-~~~
-#!/bin/bash
-
-while read phoneNumber
-do
-        if [[ ${phoneNumber:0:1} =~ [0-9]$ ]]
-        then
-                if [[ ${#phoneNumber} -eq 12 ]]
-                then
-                        if [[ ${phoneNumber:0:3} =~ [0-9]$ && ${phoneNumber:4:3} =~ [0-9]$ && ${phoneNumber:8:4} =~ [0-9]$ && ${phoneNumber:3:1} == "-" && ${phoneNumber:7:1} == "-" ]]
-                        then
-                                echo $phoneNumber
-                        fi
-                fi
-        else
-                if [[ ${#phoneNumber} -eq 14 ]]
-                then
-                        if [[ ${phoneNumber:1:3} =~ ^[0-9]+$ && ${phoneNumber:6:3} =~ [0-9]$ && ${phoneNumber:10:4} =~ [0-9]$ && ${phoneNumber:0:1} == "(" && ${phoneNumber:4:1} == ")" && ${phoneNumber:9:1} == "-" && ${phoneNumber:5:1} == " " ]]
-                        then
-                                echo $phoneNumber
-                        fi
-                fi
-        fi
-done < file.txt
-#if [[ ${phoneNumber:1:3} =~ [0-9]$ && ${phoneNumber:6:3} =~ [0-9]$ && ${phoneNumber:10:4} =~ [0-9]$ && ${phoneNumber:0:1} == ")" && ${phoneNumber:4:1} == ")" && ${phoneNumber:9:1} == "-" && ${phoneNumber:5:1} == " " ]]
-~~~
-
-------------------
+-------------------------
 
 Number of words in a file with a reverse order
 
