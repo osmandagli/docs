@@ -13,9 +13,9 @@ openssl rsa -in pub.pem -pubin -text -noout
     Encrypt some data:
 ~~~
 echo test test test > file.txt 
-openssl rsautl -encrypt -inkey pub.pem -pubin -in file.txt -out file.bin 
+openssl pkeyutl -encrypt -inkey pub.pem -pubin -in file.txt -out file.bin 
 ~~~
     Decrypt encrypted data:
 ~~~
-openssl rsautl -decrypt -inkey key.pem -in file.bin 
+openssl pkeyutl -decrypt -inkey key.pem -in file.bin 
 ~~~
