@@ -1,3 +1,4 @@
+~~~
 apiVersion: v1
 kind: Pod
 metadata:
@@ -26,3 +27,4 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
+~~~
