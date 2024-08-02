@@ -89,3 +89,4 @@
 
 #### df -h
 
+not: echo "- - -" > /sys/class/scsi_host/host0-5/scan
