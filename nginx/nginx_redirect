@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name dex.tai.com.tr;
+    server_name <dns_name_to_be_Redirected>;
 
     return 301 https://$host$request_uri;
 
@@ -11,8 +11,8 @@ server {
     listen 443 ssl;
     server_name dex.tai.com.tr;
 
-    ssl_certificate /etc/nginx/ssl/yildiz.crt;
-    ssl_certificate_key /etc/nginx/ssl/yildiz.key;
+    ssl_certificate /etc/nginx/ssl/<crt>;
+    ssl_certificate_key /etc/nginx/ssl/<key>;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
@@ -21,9 +21,9 @@ server {
     client_max_body_size 4096MB;
 
     location / {
-        rewrite "^/$" https://dex.tai.com.tr/TAISTAGE/signin.jsp?dologin?reload/ permanent;
-        proxy_pass https://SP01GNL0001.dmnint.intra:8443;
-        proxy_ssl_trusted_certificate /etc/nginx/ssl/dmnintca.pem;
+        rewrite "^/$" <login_url>?reload/ permanent;
+        proxy_pass <url_to_handle_the_request>;
+        proxy_ssl_trusted_certificate /etc/nginx/ssl/<pem_cert>;
         proxy_ssl_verify on;
         proxy_ssl_verify_depth 2;
 
