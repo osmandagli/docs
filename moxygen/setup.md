@@ -38,6 +38,12 @@ Rebuild without dependencies
 ./build/fbcode_builder/getdeps.py build moxygen --src-dir=. --no-deps
 ```
 
+## Get libraries
+
+```bash
+export LD_LIBRARY_PATH=$(find ~/moxygen_build/installed/ -name lib -type d |tr '\n' ':' | sed 's/:$//')
+```
+
 ## Tests
 
 ### Test without relay
