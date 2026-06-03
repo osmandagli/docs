@@ -94,8 +94,8 @@ ffmpeg -re \
 
 ```
 ~/moxygen_build/bin/moqrelayserver \
-  --cert /WORKSPACE/moxygen/certs/certificate.pem \
-  --key /WORKSPACE/moxygen/certs/certificate.key \
+  --cert ~/moxygen/certs/certificate.pem \
+  --key ~/moxygen/certs/certificate.key \
   --endpoint "/moq" \
   --port 4433 \
   --logging DBG1
