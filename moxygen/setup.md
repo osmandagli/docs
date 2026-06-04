@@ -227,7 +227,7 @@ perf record -e cpu-clock -g -o perf_streamer_proc.data \
 - Server (terminal 3)
 ```
 ffmpeg -re \
-  -i /home/moqt/Movies/asian-commercial.flv \
+  -i ~/Movies/asian-commercial.flv \
   -c:v libx264 -b:v 180k -g 60 -keyint_min 60 \
   -profile:v baseline -preset veryfast \
   -c:a aac -b:a 96k \
