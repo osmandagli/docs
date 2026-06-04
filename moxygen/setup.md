@@ -98,7 +98,7 @@ ffmpeg -re \
   --key ~/moxygen/certs/certificate.key \
   --endpoint "/moq" \
   --port 4433 \
-  --logging DBG1
+  --logging INFO
 ```
 
 - Server (terminal 2)
@@ -108,25 +108,25 @@ mkfifo ~/Movies/fifo.flv 2>/dev/null
 
 ~/moxygen_build/bin/moqflvstreamerclient \
   --insecure \
-  --connect_url "https://localhost:4433/moq" \
+  --connect_url "https://10.10.1.2:4433/moq" \
   --input_flv_file ~/Movies/fifo.flv \
-  --logging DBG1
+  --logging INFO
 ```
 
 - Receiver
 ```
 ~/moxygen_build/bin/moqflvreceiverclient \
   --insecure \
-  --connect_url "https://192.168.122.154:4433/moq" \
+  --connect_url "https://10.10.2.2:4433/moq" \
   --track_namespace "flvstreamer" \
   --flv_outpath /home/moqt/Movies/received.flv \
-  --logging DBG1
+  --logging INFO
 ```
 
 - Server (terminal 3)
 ```
 ffmpeg -re \
-  -i /home/moqt/Movies/asian-commercial.flv \
+  -i ~/Movies/asian-commercial.flv \
   -c:v libx264 -b:v 180k -g 60 -keyint_min 60 \
   -profile:v baseline -preset veryfast \
   -c:a aac -b:a 96k \
