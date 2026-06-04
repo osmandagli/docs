@@ -189,42 +189,42 @@ ffmpeg -re \
   -f flv ~/Movies/fifo.flv
 ```
 
------
+### Testing with relay
 
 Measuring the cpu-clock of relay server and streamer
 
-- Server (terminal 1)
+- Relay
 ```
-perf record -e cpu-clock -g -o perf_relay_proc.data \
+perf record -e cpu-clock -g -o ./data/perf_relay_proc.data \
   ~/moxygen_build/bin/moqrelayserver \
-  --cert /WORKSPACE/moxygen/certs/certificate.pem \
-  --key /WORKSPACE/moxygen/certs/certificate.key \
+  --cert ~/moxygen/certs/certificate.pem \
+  --key ~/moxygen/certs/certificate.key \
   --endpoint "/moq" \
   --port 4433 \
-  --logging DBG1
+  --logging INFO
 ```
 
-- Server (terminal 2)
+- Publisher (terminal 1)
 ```
 perf record -e cpu-clock -g -o perf_streamer_proc.data \
   ~/moxygen_build/bin/moqflvstreamerclient \
   --insecure \
-  --connect_url "https://localhost:4433/moq" \
+  --connect_url "https://10.10.1.2:4433/moq" \
   --input_flv_file ~/Movies/fifo.flv \
-  --logging DBG1
+  --logging INFO
 ```
 
 - Receiver
 ```
 ~/moxygen_build/bin/moqflvreceiverclient \
   --insecure \
-  --connect_url "https://192.168.122.154:4433/moq" \
+  --connect_url "https://10.10.2.2:4433/moq" \
   --track_namespace "flvstreamer" \
   --flv_outpath /home/moqt/Movies/received.flv \
-  --logging DBG1
+  --logging INFO
 ```
 
-- Server (terminal 3)
+- Publisher (terminal 2)
 ```
 ffmpeg -re \
   -i ~/Movies/asian-commercial.flv \
