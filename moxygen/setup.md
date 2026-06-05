@@ -19,9 +19,9 @@ Set environment variables
 eval $(./build/fbcode_builder/getdeps.py env --src-dir moxygen:. moxygen)
 ```
 
-Before running the command below make sure that you have more than 50GB of space.
+Before running the command below, make sure that you have more than 50GB of space.
 Build the moxygen.
-scratch path is important because if not set, moxygen will be build under /tmp which will be deleted after a reboot.
+Scratch path is important because if not set, moxygen will be built under /tmp, which will be deleted after a reboot.
 ```bash
 ./build/fbcode_builder/getdeps.py build moxygen --clean --scratch-path ~/moxygen_build --build-dir ~/moxygen_build/build --install-dir ~/moxygen_build
 ```
@@ -45,48 +45,6 @@ export LD_LIBRARY_PATH=$(find ~/moxygen_build/installed/ -name lib -type d |tr '
 ```
 
 ## Tests
-
-### Test without relay
-
-- Server (Terminal 1)
-
-Create the server
-```
-mkfifo ~/Movies/fifo.flv 2>/dev/null
-```
-
-```
-~/moxygen_build/bin/moqflvserver \
-  --cert /WORKSPACE/moxygen/certs/certificate.pem \
-  --key /WORKSPACE/moxygen/certs/certificate.key \
-  --input_flv_file ~/Movies/fifo.flv \
-  --port 9667 \
-  --logging DBG1
-```
-
-- Receiver
-
-Create the receiver
-```
-~/moxygen_build/bin/moqflvreceiverclient \
-  --insecure \
-  --connect_url "https://192.168.122.154:9667/moq-flv" \
-  --track_namespace "flvstreamer" \
-  --flv_outpath /home/moqt/Movies/received.flv \
-  --logging DBG1
-```
-
-- Server (Terminal 2)
-
-Feed the video
-```
-ffmpeg -re \
-  -i /home/moqt/Movies/asian-commercial.flv  \
-  -c:v libx264 -b:v 180k -g 60 -keyint_min 60 \
-  -profile:v baseline -preset veryfast \
-  -c:a aac -b:a 96k \
-  -f flv ~/Movies/fifo.flv
-```
 
 ### Test with relay in between
 
@@ -135,63 +93,9 @@ ffmpeg -re \
 
 ## Perf 
 
-* P2P
-
-Performance counter stats for
-
-``` 
-'./moqflvserver --input_flv_file /home/moqt/Movies/fifo.flv --insecure --port 9667':
-```
-            833.59 msec task-clock                #    0.013 CPUs utilized          
-              4928      context-switches          #    5.912 K/sec                  
-               273      cpu-migrations            #  327.499 /sec                   
-               994      page-faults               #    1.192 K/sec                  
-               994      minor-faults              #    1.192 K/sec                  
-
-      62.078978073 seconds time elapsed
-
-       0.570133000 seconds user
-       0.320489000 seconds sys
-
-
-### Perf commands
-
-Measuring the P2P cpu-clock of P2P server
-
-- Server (terminal 1)
-```
-perf record -e cpu-clock -g -o perf_p2p_proc.data \
-  ~/moxygen_build/bin/moqflvserver \
-  --cert /WORKSPACE/moxygen/certs/certificate.pem \
-  --key /WORKSPACE/moxygen/certs/certificate.key \
-  --input_flv_file ~/Movies/fifo.flv \
-  --port 9667 \
-  --logging DBG1
-```
-
-- Receiver
-```
-~/moxygen_build/bin/moqflvreceiverclient \
-  --insecure \
-  --connect_url "https://192.168.122.154:9667/moq-flv" \
-  --track_namespace "flvstreamer" \
-  --flv_outpath /home/moqt/Movies/received.flv \
-  --logging DBG1
-```
-
-- Server (terminal 2)
-```
-ffmpeg -re \
-  -i /home/moqt/Movies/asian-commercial.flv \
-  -c:v libx264 -b:v 180k -g 60 -keyint_min 60 \
-  -profile:v baseline -preset veryfast \
-  -c:a aac -b:a 96k \
-  -f flv ~/Movies/fifo.flv
-```
-
 ### Testing with relay
 
-Measuring the cpu-clock of relay server and streamer
+Measuring the cpu-clock of the relay server and the streamer
 
 - Relay
 ```
@@ -235,10 +139,10 @@ ffmpeg -re \
 ```
 
 
+## Cloudlab settings
 
-
-1. pin the relay to a CPU 1 not 0
-2. set flow director of NIC to send traffic to CPU 1 (ethtool)
+1. Pin the relay to a CPU 1, not 0
+2. Set the flow director of NIC to send traffic to CPU 1 (ethtool)
 3. MAX performance in CPU scaling (CPU Governor) and disable c states
 4. Disable hyperthreading. 
 
