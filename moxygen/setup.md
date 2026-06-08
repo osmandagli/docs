@@ -123,7 +123,7 @@ perf record -e cpu-clock -g -o perf_streamer_proc.data \
   --insecure \
   --connect_url "https://10.10.2.2:4433/moq" \
   --track_namespace "flvstreamer" \
-  --flv_outpath /home/moqt/Movies/received.flv \
+  --flv_outpath ~/Movies/received.flv \
   --logging INFO
 ```
 
