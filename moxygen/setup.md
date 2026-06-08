@@ -48,8 +48,7 @@ export LD_LIBRARY_PATH=$(find ~/moxygen_build/installed/ -name lib -type d |tr '
 
 ### Test with relay in between
 
-- Server (terminal 1)
-
+- Relay
 ```
 ~/moxygen_build/bin/moqrelayserver \
   --cert ~/moxygen/certs/certificate.pem \
@@ -59,7 +58,7 @@ export LD_LIBRARY_PATH=$(find ~/moxygen_build/installed/ -name lib -type d |tr '
   --logging INFO
 ```
 
-- Server (terminal 2)
+- Publisher (Terminal 1)
 
 ```
 mkfifo ~/Movies/fifo.flv 2>/dev/null
@@ -77,11 +76,11 @@ mkfifo ~/Movies/fifo.flv 2>/dev/null
   --insecure \
   --connect_url "https://10.10.2.2:4433/moq" \
   --track_namespace "flvstreamer" \
-  --flv_outpath /home/moqt/Movies/received.flv \
+  --flv_outpath ~/Movies/received.flv \
   --logging INFO
 ```
 
-- Server (terminal 3)
+- Publisher (Terminal 2)
 ```
 ffmpeg -re \
   -i ~/Movies/asian-commercial.flv \
